@@ -1,0 +1,42 @@
+---
+title: "Taller1"
+author: "Juliana Arbelaez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r}
+library(dplyr)
+library(ggplot2)
+
+##Se usará "sample" para generar 12 valores aleatorios entre 1 y 100
+Lista <- sample(1:100, size = 12, replace = FALSE)
+```
+Se pusieron plantas al azar que pudieran se encontradas en Colombia
+
+```{r}
+
+datos <- data.frame(
+  Familia = c("Melastomataceae Miconia", "Euphorbiaceae Croton", "Annonaceae Guatteria", "Clusiaceae Clusia",
+              "Lauraceae Ocotea", "Rubiaceae Palicourea", "Araceae Anthurium", "Sapindaceae Paullinia",
+              "Bromeliaceae Guzmania", "Cyperaceae Rhynchospora", "Moraceae Ficus", "Gesneriaceae Columnea"),
+Conteo <-Lista
+)
+datos <- datos %>%
+  mutate(Porcentaje = Conteo / sum(Conteo) * 100)
+
+print(datos)
+
+```
+En este caso la planta con mayor abundancia es la Planta flamenco (Araceae Anthurium)
+
+```{r}
+ggplot(datos, aes(x = reorder(Familia, Porcentaje), y = Porcentaje)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  coord_flip() +
+  labs(title = "Distribución porcentual del polen por familia",
+       x = "", y = "% de polen") +
+  theme_minimal()
+
+```
+A continuacion se observará una grafica del conteo de polen para cada planta donde se observa que la mas abundante es Araceae Anthurium
+
