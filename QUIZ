@@ -1,0 +1,37 @@
+
+Taller en R
+library(dplyr)
+library(ggplot2)
+
+datos <- data.frame(
+  Especie = c("Lungfish","Shark","Frog","Salamander","Turtle","Alligator","Falcon","Ostrich","Cod","Armadillo","Elephant","Human","Dog","Wombat","Platypus","Amphioxus"),
+  A = c(301, 311,336,319,361,333,340,307,288,359,352,326,331,340,309,243),
+  C = c(338,293,289,319,359,366,382,387,307,328,326,389,318,366,315,211),
+  G = c(152,150,144,166,131,145,142,147,182,150,137,136,159,144,157,246),
+  T = c(353,390,371,337,293,315,279,299,384,303,322,286,332,296,359,4430))
+
+# Calcular porcentaje GC
+datos <- datos %>%
+  mutate(
+    Total = A + C + G + T,
+    GC_porcentaje = ((G + C) / Total) * 100
+  )
+
+# Mostrar tabla con resultados
+print(datos %>% select(Especie, GC_porcentaje))
+
+# Graficar porcentaje GC por especie
+ggplot(datos, aes(x = reorder(Especie, -GC_porcentaje), y = GC_porcentaje)) +
+  geom_bar(stat = "identity", fill = "pink") +
+  theme_minimal() +
+  labs(title = "Porcentaje GC por especie",
+       x = "Especie",
+       y = "Porcentaje GC (%)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+#- Amphioxus tiene un porcentaje GC muy bajo (~9%), lo que sugiere una alta proporción 
+#de nucleótidos T.
+#Falcon, Ostrich y Alligator presentan porcentajes GC más altos (~55–57%), 
+#lo que puede estar relacionado con una mayor estabilidad genómica, ya que las 
+#bases G y C forman tres enlaces de hidrógeno.
